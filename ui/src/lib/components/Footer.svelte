@@ -1,0 +1,3 @@
+<footer class="py-3 text-center bg-light text-secondary">
+  © {new Date().getFullYear()} Prototyping Book App
+</footer>
