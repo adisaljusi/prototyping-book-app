@@ -1,4 +1,9 @@
-/** @type {import('./$types').PageServerLoad} */
+import { searchBooks } from "$lib/server/openlibrary_api";
+
 export async function load() {
-    return {};
-};
+  const externalBooks = await searchBooks("bestsellers");
+
+  return {
+    externalBooks,
+  };
+}
