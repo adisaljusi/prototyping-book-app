@@ -4,73 +4,68 @@ import { MongoClient, ObjectId } from "mongodb";
 const client = new MongoClient(MONGODB_URI);
 await client.connect();
 const db = client.db("Bookshelf");
-
-export async function getMovies() {
+export async function getBooks() {
   try {
-    const moviesCollection = db.collection("movies");
-    const movies = await moviesCollection.find({}).toArray();
-    const serializedMovies = movies.map((movie) => {
-      return {
-        ...movie,
-        _id: movie._id.toString(),
-      };
-    });
-
-    return serializedMovies;
+    const booksCollection = db.collection("books");
+    const books = await booksCollection.find({}).toArray();
+    return books.map((book) => ({
+      _id: book._id.toString(),
+      url: book.url,
+      isRead: book.isRead,
+    }));
   } catch (error) {
-    console.error("Error fetching movies:", error);
+    console.error("Error fetching books:", error);
     return [];
   }
 }
 
-export async function getMovieById(movieId) {
+export async function getBookById(bookId) {
   try {
-    const moviesCollection = db.collection("movies");
-    const movie = await moviesCollection.findOne({
-      _id: new ObjectId(movieId),
+    const booksCollection = db.collection("books");
+    const book = await booksCollection.findOne({
+      _id: new ObjectId(bookId),
     });
-    if (!movie) {
-      throw new Error("Movie not found");
+    if (!book) {
+      throw new Error("Book not found");
     }
-
     return {
-      ...movie,
-      _id: movie._id.toString(),
+      _id: book._id.toString(),
+      url: book.url,
+      isRead: book.isRead,
     };
   } catch (error) {
-    console.error("Error fetching movie by ID:", error);
+    console.error("Error fetching book by ID:", error);
     return null;
   }
 }
 
-export async function createMovie(movie) {
+export async function createBook({ url, isRead = false }) {
   try {
-    const moviesCollection = db.collection("movies");
-    const result = await moviesCollection.insertOne(movie);
+    const booksCollection = db.collection("books");
+    const result = await booksCollection.insertOne({ url, isRead });
+    return {
+      _id: result.insertedId.toString(),
+      url,
+      isRead,
+    };
   } catch (error) {
-    console.error("Error creating movie:", error);
+    console.error("Error creating book:", error);
     return null;
   }
-
-  return {
-    ...movie,
-    _id: movie._id.toString(),
-  };
 }
 
-export async function deleteMovie(movieId) {
+export async function deleteBook(bookId) {
   try {
-    const moviesCollection = db.collection("movies");
-    const result = await moviesCollection.deleteOne({
-      _id: new ObjectId(movieId),
+    const booksCollection = db.collection("books");
+    const result = await booksCollection.deleteOne({
+      _id: new ObjectId(bookId),
     });
     if (result.deletedCount === 0) {
-      throw new Error("Movie not found");
+      throw new Error("Book not found");
     }
+    return true;
   } catch (error) {
-    console.error("Error deleting movie:", error);
+    console.error("Error deleting book:", error);
     return false;
   }
-
-  return true;
 }

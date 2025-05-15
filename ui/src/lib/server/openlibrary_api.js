@@ -21,3 +21,13 @@ export const searchBooks = async (query) => {
   const data = await response.json();
   return data.docs.map(transformBookData);
 };
+
+export const getBookDetails = async (bookId) => {
+  const response = await fetch(`${OPENLIB_BASE_URI}/${bookId}.json`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch book details");
+  }
+  const data = await response.json();
+  return transformBookData(data);
+};
