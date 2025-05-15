@@ -2,3 +2,5 @@
   /** @type {{ data: import('./$types').PageData }} */
   let { data } = $props();
 </script>
+
+hey there

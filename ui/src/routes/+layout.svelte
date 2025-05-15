@@ -6,9 +6,7 @@
   const links = [
     { href: "/", label: "Home" },
     { href: "/books", label: "Books" },
-    { href: "/books/create", label: "Create Book" },
-    { href: "/authors", label: "Authors" },
-    { href: "/authors/create", label: "Create Author" },
+    { href: "/summaries", label: "Summaries" },
   ];
 </script>
 
