@@ -1,4 +1,8 @@
-/** @type {import('./$types').PageServerLoad} */
+import { getBooks } from "$lib/server/db";
+
 export async function load() {
-    return {};
-};
+  const internalBooks = await getBooks();
+  return {
+    books: internalBooks,
+  };
+}

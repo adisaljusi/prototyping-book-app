@@ -1,15 +1,8 @@
 <script>
-  let { book, addToBookshelf, isInBookshelf } = $props();
+  let { book, addToBookshelf, removeFromBookshelf, isInBookshelf } = $props();
 </script>
 
-<a
-  class="card h-100"
-  data-id={book.id}
-  style="max-width: 200px;"
-  role="button"
-  tabindex="0"
-  href="/books/{book.id}"
->
+<div class="card h-100" data-id={book.id} role="button" tabindex="0">
   <img
     class="card-img-top"
     src={book.cover_url}
@@ -18,12 +11,7 @@
   />
   <div class="card-body text-center p-2">
     <h5 class="card-title mb-2">
-      <p
-        href={book.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style="text-decoration: none; color: inherit;"
-      >
+      <p href={book.url} style="text-decoration: none; color: inherit;">
         {book.title}
       </p>
     </h5>
@@ -37,15 +25,32 @@
         {book.year}
       </p>
     {/if}
-    <button
-      class="btn btn-primary btn-sm mt-2"
-      type="button"
-      onclick={addToBookshelf}
+
+    <div
+      class="d-flex flex-column justify-content-center align-items-center mt-3"
     >
-      Add to Bookshelf
-    </button>
+      <a class="btn btn-sm btn-outline" href="/books/{book.id}">View book</a>
+
+      {#if isInBookshelf}
+        <button
+          class="btn btn-sm btn-outline-danger mt-2"
+          onclick={() => removeFromBookshelf(book)}
+          data-id={book.id}
+        >
+          Remove from Bookshelf
+        </button>
+      {:else}
+        <button
+          class="btn btn-sm btn-outline-primary mt-2"
+          onclick={() => addToBookshelf(book)}
+          data-id={book.id}
+        >
+          Add to Bookshelf
+        </button>
+      {/if}
+    </div>
   </div>
-</a>
+</div>
 
 <style>
   a {

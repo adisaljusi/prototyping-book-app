@@ -4,14 +4,13 @@ import { MongoClient, ObjectId } from "mongodb";
 const client = new MongoClient(MONGODB_URI);
 await client.connect();
 const db = client.db("Bookshelf");
-export async function getBooks() {
+export async function getBooks(query = {}) {
   try {
     const booksCollection = db.collection("books");
-    const books = await booksCollection.find({}).toArray();
+    const books = await booksCollection.find(query).toArray();
     return books.map((book) => ({
+      ...book,
       _id: book._id.toString(),
-      url: book.url,
-      isRead: book.isRead,
     }));
   } catch (error) {
     console.error("Error fetching books:", error);
@@ -39,13 +38,14 @@ export async function getBookById(bookId) {
   }
 }
 
-export async function createBook({ url, isRead = false }) {
+export async function createBook(book, isRead = false) {
   try {
     const booksCollection = db.collection("books");
-    const result = await booksCollection.insertOne({ url, isRead });
+    const result = await booksCollection.insertOne({ ...book, isRead });
+
     return {
       _id: result.insertedId.toString(),
-      url,
+      ...book,
       isRead,
     };
   } catch (error) {

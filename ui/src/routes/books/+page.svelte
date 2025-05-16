@@ -1,12 +1,53 @@
 <script>
+  import { goto, invalidateAll } from "$app/navigation";
   import BookCard from "$lib/components/BookCard.svelte";
-  import { goto } from "$app/navigation";
+  import BookTable from "$lib/components/BookTable.svelte";
+  // import { createBook } from "$lib/server/db.js";
+  import { addBook, bookshelf } from "$lib/store/bookshelfStore.js";
+  import { redirect } from "@sveltejs/kit";
 
   let { data } = $props();
+  bookshelf.set(data.internalBooks);
+
+  function isBookInBookshelf(bookId) {
+    return $bookshelf.some((internalBook) => internalBook.id === bookId);
+  }
+
+  const addToBookshelf = async (book) => {
+    const response = await fetch("api/bookshelf", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(book),
+    });
+
+    if (response.ok) {
+      const newBook = await response.json();
+      addBook(book);
+      goto("/books");
+    } else {
+      console.error("Failed to add book to bookshelf");
+    }
+  };
+
+  const removeFromBookshelf = async (event) => {
+    const bookId = event.currentTarget.dataset.id;
+
+    // const response = await fetch(`/api/bookshelf/${bookId}`, {
+    //   method: "DELETE",
+    // });
+    // if (response.ok) {
+    //   goto("/books");
+    // } else {
+    //   console.error("Failed to remove book from bookshelf");
+    // }
+  };
 </script>
 
 <div class="container">
   <h2>My book Library</h2>
+  {#if $bookshelf.length}
+    <BookTable books={$bookshelf} />
+  {/if}
 
   <div class="row"></div>
 
@@ -16,11 +57,16 @@
     {#if data.externalBooks.length > 0}
       {#each data.externalBooks as book}
         <div class="col-md-4 mb-4">
-          <BookCard {book} />
+          <BookCard
+            {book}
+            isInBookshelf={isBookInBookshelf(book.id)}
+            {addToBookshelf}
+            {removeFromBookshelf}
+          />
         </div>
       {/each}
     {:else}
-      <p class="text-center">Keine Bücher gefunden.</p>
+      <p class="text-center">No books found.</p>
     {/if}
   </div>
 </div>
