@@ -1,13 +1,16 @@
 <script>
-  import { goto, invalidateAll } from "$app/navigation";
+  import { goto } from "$app/navigation";
   import BookCard from "$lib/components/BookCard.svelte";
   import BookTable from "$lib/components/BookTable.svelte";
-  // import { createBook } from "$lib/server/db.js";
-  import { addBook, bookshelf } from "$lib/store/bookshelfStore.js";
-  import { redirect } from "@sveltejs/kit";
+  import SearchBar from "$lib/components/SearchBar.svelte";
+  import { addBook, bookshelf, removeBook } from "$lib/store/bookshelfStore.js";
 
   let { data } = $props();
+
+  let searchQuery = $state("");
   bookshelf.set(data.internalBooks);
+
+  $inspect(searchQuery);
 
   function isBookInBookshelf(bookId) {
     return $bookshelf.some((internalBook) => internalBook.id === bookId);
@@ -29,27 +32,31 @@
     }
   };
 
-  const removeFromBookshelf = async (event) => {
-    const bookId = event.currentTarget.dataset.id;
-
-    // const response = await fetch(`/api/bookshelf/${bookId}`, {
-    //   method: "DELETE",
-    // });
-    // if (response.ok) {
-    //   goto("/books");
-    // } else {
-    //   console.error("Failed to remove book from bookshelf");
-    // }
+  const removeFromBookshelf = async (book) => {
+    const response = await fetch(`/api/bookshelf/`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(book),
+    });
+    if (response.ok) {
+      removeBook(book);
+      goto("/books");
+    } else {
+      console.error("Failed to remove book from bookshelf");
+    }
   };
 </script>
 
 <div class="container">
   <h2>My book Library</h2>
   {#if $bookshelf.length}
-    <BookTable books={$bookshelf} />
+    <BookTable books={$bookshelf} {removeFromBookshelf} />
   {/if}
 
-  <div class="row"></div>
+  <div class="container">
+    <h2>Search for books</h2>
+    <SearchBar query={searchQuery} />
+  </div>
 
   <h2 class="text-center mb-4">Bestsellers</h2>
 
@@ -58,6 +65,7 @@
       {#each data.externalBooks as book}
         <div class="col-md-4 mb-4">
           <BookCard
+            data-id={book.id}
             {book}
             isInBookshelf={isBookInBookshelf(book.id)}
             {addToBookshelf}

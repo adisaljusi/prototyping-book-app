@@ -28,7 +28,7 @@ export const DELETE = async ({ request }) => {
   const book = await request.json();
 
   try {
-    await deleteBook(book);
+    await deleteBook(book.id);
   } catch (error) {
     console.error("Error adding book to bookshelf:", error);
     error(500, "Failed to add book to bookshelf");

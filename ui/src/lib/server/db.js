@@ -4,6 +4,7 @@ import { MongoClient, ObjectId } from "mongodb";
 const client = new MongoClient(MONGODB_URI);
 await client.connect();
 const db = client.db("Bookshelf");
+
 export async function getBooks(query = {}) {
   try {
     const booksCollection = db.collection("books");
@@ -56,10 +57,16 @@ export async function createBook(book, isRead = false) {
 
 export async function deleteBook(bookId) {
   try {
+    if (bookId === undefined || bookId === null) {
+      throw new Error("Invalid book ID");
+    }
+
     const booksCollection = db.collection("books");
-    const result = await booksCollection.deleteOne({
-      _id: new ObjectId(bookId),
-    });
+    const query = {
+      id: bookId,
+    };
+    const result = await booksCollection.deleteOne(query);
+
     if (result.deletedCount === 0) {
       throw new Error("Book not found");
     }
