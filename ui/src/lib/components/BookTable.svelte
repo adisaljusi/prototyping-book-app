@@ -16,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    {#each books as book (book._id)}
+    {#each books as book (book.id)}
       <tr>
         <td>
           <img

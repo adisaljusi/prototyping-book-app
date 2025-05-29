@@ -1,9 +1,8 @@
 <script>
-  import { goto } from "$app/navigation";
   import BookCard from "$lib/components/BookCard.svelte";
   import BookTable from "$lib/components/BookTable.svelte";
   import SearchBar from "$lib/components/SearchBar.svelte";
-  import { addBook, bookshelf, removeBook } from "$lib/store/bookshelfStore.js";
+  import { bookshelf, bookShelfActions } from "$lib/store/bookshelfStore.js";
 
   let { data } = $props();
 
@@ -15,42 +14,15 @@
   function isBookInBookshelf(bookId) {
     return $bookshelf.some((internalBook) => internalBook.id === bookId);
   }
-
-  const addToBookshelf = async (book) => {
-    const response = await fetch("api/bookshelf", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(book),
-    });
-
-    if (response.ok) {
-      const newBook = await response.json();
-      addBook(book);
-      goto("/books");
-    } else {
-      console.error("Failed to add book to bookshelf");
-    }
-  };
-
-  const removeFromBookshelf = async (book) => {
-    const response = await fetch(`/api/bookshelf/`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(book),
-    });
-    if (response.ok) {
-      removeBook(book);
-      goto("/books");
-    } else {
-      console.error("Failed to remove book from bookshelf");
-    }
-  };
 </script>
 
 <div class="container">
   <h2>My book Library</h2>
   {#if $bookshelf.length}
-    <BookTable books={$bookshelf} {removeFromBookshelf} />
+    <BookTable
+      books={$bookshelf}
+      removeFromBookshelf={(book) => bookShelfActions.removeFromBookshelf(book)}
+    />
   {/if}
 
   <div class="container">
@@ -68,8 +40,9 @@
             data-id={book.id}
             {book}
             isInBookshelf={isBookInBookshelf(book.id)}
-            {addToBookshelf}
-            {removeFromBookshelf}
+            addToBookshelf={(book) => bookShelfActions.addToBookshelf(book)}
+            removeFromBookshelf={(book) =>
+              bookShelfActions.removeFromBookshelf(book)}
           />
         </div>
       {/each}

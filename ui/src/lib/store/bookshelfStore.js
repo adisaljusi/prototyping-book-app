@@ -1,5 +1,9 @@
 import { writable } from "svelte/store";
 
+export function setSelectedBook(book) {
+  selectedBook.set(book);
+}
+
 export const bookshelf = writable([]);
 
 export function addBook(book) {
@@ -12,3 +16,34 @@ export function removeBook(book) {
     return [...updatedBooks];
   });
 }
+
+export const selectedBook = writable(null);
+
+export const bookShelfActions = {
+  async addToBookshelf(book) {
+    const response = await fetch("api/bookshelf", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(book),
+    });
+
+    if (response.ok) {
+      const newBook = await response.json();
+      addBook(book);
+    } else {
+      console.error("Failed to add book to bookshelf");
+    }
+  },
+  async removeFromBookshelf(book) {
+    const response = await fetch(`/api/bookshelf/`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(book),
+    });
+    if (response.ok) {
+      removeBook(book);
+    } else {
+      console.error("Failed to remove book from bookshelf");
+    }
+  },
+};
