@@ -49,7 +49,7 @@
             data-id={book.id}
             {book}
             isInBookshelf={isBookInBookshelf(book.id)}
-            addToBookshelf={(book) => bookShelfActions.addToBoobind:value={title}kshelf(book)}
+            addToBookshelf={(book) => bookShelfActions.addToBookshelf(book)}
             removeFromBookshelf={(book) =>
               bookShelfActions.removeFromBookshelf(book)}
           />
