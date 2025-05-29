@@ -21,7 +21,7 @@ export const selectedBook = writable(null);
 
 export const bookShelfActions = {
   async addToBookshelf(book) {
-    const response = await fetch("api/bookshelf", {
+    const response = await fetch("/api/bookshelf", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(book),

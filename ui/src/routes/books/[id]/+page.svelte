@@ -15,6 +15,4 @@
   };
 </script>
 
-{@debug data}
-
 <BookDetails book={$selectedBook} />

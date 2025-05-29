@@ -3,8 +3,6 @@
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(query);
-    
     onSearch(query);
   }
 </script>
