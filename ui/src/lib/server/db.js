@@ -23,7 +23,7 @@ export async function getBookById(bookId) {
   try {
     const booksCollection = db.collection("books");
     const book = await booksCollection.findOne({
-      _id: new ObjectId(bookId),
+      id: bookId,
     });
     if (!book) {
       throw new Error("Book not found");
@@ -43,6 +43,10 @@ export async function createBook(book, isRead = false) {
   try {
     const booksCollection = db.collection("books");
     const result = await booksCollection.insertOne({ ...book, isRead });
+
+    if (!result.insertedId) {
+      throw new Error("Failed to insert book");
+    }
 
     return {
       _id: result.insertedId.toString(),

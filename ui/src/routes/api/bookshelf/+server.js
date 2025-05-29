@@ -6,7 +6,6 @@ import { error, json } from "@sveltejs/kit";
 export const POST = async ({ request }) => {
   const book = await request.json();
 
-  // TODO imporve logic
   const books = await getBooks();
   const bookExists = books.some((existingBook) => existingBook.id === book.id);
 
