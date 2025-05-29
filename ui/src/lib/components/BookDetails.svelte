@@ -1,5 +1,5 @@
 <script>
-  let { book, addToBookshelf, removeFromBookshelf, isInBookshelf } = $props();
+  let { book, addToBookshelf, removeFromBookshelf } = $props();
 </script>
 
 {#if book}
@@ -17,7 +17,7 @@
         class="book-cover"
       />
     {/if}
-    {#if isInBookshelf}
+    {#if book.isInBookshelf}
       <button
         class="btn btn-sm btn-outline-danger mt-2"
         onclick={() => removeFromBookshelf(book)}
