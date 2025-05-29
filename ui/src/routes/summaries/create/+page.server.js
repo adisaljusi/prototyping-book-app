@@ -1,4 +1,4 @@
-import { createMovie } from "$lib/server/db";
+import { createBook } from "$lib/server/db";
 
 export const actions = {
   create: async ({ request }) => {
@@ -19,7 +19,7 @@ export const actions = {
     };
 
     try {
-      const res = await createMovie(movie);
+      const res = await createBook(movie);
 
       if (res === null) {
         throw new Error("Failed to create movie");

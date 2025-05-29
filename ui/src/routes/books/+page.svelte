@@ -7,8 +7,8 @@
   import { writable } from "svelte/store";
 
   let { data } = $props();
-
   let searchQuery = $state("");
+
   bookshelf.set(data.internalBooks);
 
   function isBookInBookshelf(bookId) {
@@ -16,16 +16,15 @@
   }
 
   function handleSearch() {
-    console.log("here");
-    console.log(searchQuery);
-
-    goto(`/books/list/${searchQuery}`);
+    goto(`/books/list/${encodeURIComponent(searchQuery)}`);
   }
 </script>
 
-{@debug searchQuery}
-
 <div class="container">
+  <div class="container mb-4">
+    <SearchBar bind:query={searchQuery} onSearch={handleSearch} />
+  </div>
+
   <h2>My book Library</h2>
   {#if $bookshelf.length}
     <BookTable
@@ -33,11 +32,6 @@
       removeFromBookshelf={(book) => bookShelfActions.removeFromBookshelf(book)}
     />
   {/if}
-
-  <div class="container">
-    <SearchBar bind:query={searchQuery} onSearch={handleSearch} />
-    <!-- <SearchBar query={$searchQuery} onSearch={handleSearch} /> -->
-  </div>
 
   <h2 class="text-center mb-4">Bestsellers</h2>
 
