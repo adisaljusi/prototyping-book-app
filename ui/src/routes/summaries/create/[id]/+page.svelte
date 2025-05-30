@@ -8,6 +8,7 @@
     <input type="text" class="form-control" id="title" name="title" required />
   </div>
   <div class="mb-3">
+    <label for="summary-type" class="form-label">Type of Summary</label>
     <div class="mb-3">
       <select
         class="form-select"
@@ -26,7 +27,6 @@
         <option value="timeline">Timeline</option>
       </select>
     </div>
-    <label for="summary-type" class="form-label">Type of Summary</label>
     <label for="summary-text" class="form-label">Summary</label>
     <textarea
       class="form-control"

@@ -9,7 +9,6 @@
   }
 </script>
 
-{@debug data}
 <div class="container">
   <div class="container">
     <h2>Results for:</h2>

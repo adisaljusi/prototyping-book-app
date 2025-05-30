@@ -10,7 +10,7 @@
   ];
 </script>
 
-<Navbar title="Productz" {links} />
+<Navbar title="Bookshelf" {links} />
 
 <main class="container mt-4">
   {@render children()}
