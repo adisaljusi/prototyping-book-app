@@ -12,6 +12,7 @@
       <th scope="col">Year</th>
       <th scope="col">Read</th>
       <th scope="col">Link</th>
+      <th scope="col">Summaries</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -37,6 +38,9 @@
         </td>
         <td>
           <a href="/books/{book.id}" class="btn btn-sm btn-primary">Open</a>
+        </td>
+        <td>
+          <a href="/summaries/{book.id}" class="btn btn-sm btn-primary">Open</a>
         </td>
         <td>
           <button

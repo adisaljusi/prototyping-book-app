@@ -80,3 +80,60 @@ export async function deleteBook(bookId) {
     return false;
   }
 }
+
+export async function createSummary(summary) {
+  try {
+    const summariesCollection = db.collection("summaries");
+    const result = await summariesCollection.insertOne({ summary });
+
+    if (!result.insertedId) {
+      throw new Error("Failed to insert summary");
+    }
+
+    return {
+      _id: result.insertedId.toString(),
+      ...summary,
+    };
+  } catch (error) {
+    console.error("Error creating summary:", error);
+    return null;
+  }
+}
+
+export async function getSummaryByBookId(bookId) {
+  try {
+    const summariesCollection = db.collection("summaries");
+    const summary = await summariesCollection.findOne({
+      bookId,
+    });
+    if (!summary) {
+      throw new Error("Summary not found");
+    }
+    return {
+      _id: summary._id.toString(),
+      ...summary,
+    };
+  } catch (error) {
+    console.error("Error fetching summary by ID:", error);
+    return [];
+  }
+}
+
+export async function deleteSummary(summaryId) {
+  try {
+    if (!summaryId) {
+      throw new Error("Invalid summary ID");
+    }
+    const summariesCollection = db.collection("summaries");
+    const result = await summariesCollection.deleteOne({
+      _id: new ObjectId(summaryId),
+    });
+    if (result.deletedCount === 0) {
+      throw new Error("Summary not found");
+    }
+    return true;
+  } catch (error) {
+    console.error("Error deleting summary:", error);
+    return false;
+  }
+}
