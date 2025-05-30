@@ -3,12 +3,12 @@
     <div class="col-lg-6">
       <h1 class="display-4 fw-bold">Welcome to your digital library</h1>
       <p class="fs-5 my-4">
-        Manage your books and authors with this user-friendly application.
+        Manage your books and summaries with this user-friendly application.
       </p>
       <div class="d-flex gap-3">
         <a href="/books" class="btn btn-primary btn-lg">Browse Books</a>
-        <a href="/authors" class="btn btn-outline-primary btn-lg"
-          >Discover Authors</a
+        <a href="/summaries" class="btn btn-outline-primary btn-lg"
+          >Discover Summaries</a
         >
       </div>
     </div>

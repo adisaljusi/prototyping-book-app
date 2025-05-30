@@ -29,9 +29,8 @@ export async function getBookById(bookId) {
       throw new Error("Book not found");
     }
     return {
+      ...book,
       _id: book._id.toString(),
-      url: book.url,
-      isRead: book.isRead,
     };
   } catch (error) {
     console.error("Error fetching book by ID:", error);
@@ -84,15 +83,15 @@ export async function deleteBook(bookId) {
 export async function createSummary(summary) {
   try {
     const summariesCollection = db.collection("summaries");
-    const result = await summariesCollection.insertOne({ summary });
+    const result = await summariesCollection.insertOne({ ...summary });
 
     if (!result.insertedId) {
       throw new Error("Failed to insert summary");
     }
 
     return {
-      _id: result.insertedId.toString(),
       ...summary,
+      _id: result.insertedId.toString(),
     };
   } catch (error) {
     console.error("Error creating summary:", error);
@@ -103,16 +102,16 @@ export async function createSummary(summary) {
 export async function getSummaryByBookId(bookId) {
   try {
     const summariesCollection = db.collection("summaries");
-    const summary = await summariesCollection.findOne({
-      bookId,
-    });
-    if (!summary) {
-      throw new Error("Summary not found");
-    }
-    return {
-      _id: summary._id.toString(),
+    const summaries = await summariesCollection
+      .find({
+        bookId,
+      })
+      .toArray();
+
+    return summaries.map((summary) => ({
       ...summary,
-    };
+      _id: summary._id.toString(),
+    }));
   } catch (error) {
     console.error("Error fetching summary by ID:", error);
     return [];

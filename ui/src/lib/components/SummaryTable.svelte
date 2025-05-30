@@ -7,15 +7,17 @@
     <tr>
       <th scope="col">Summary</th>
       <th scope="col">Type</th>
-      <th scope="col">Date</th>
+      <th scope="col">Created</th>
+      <th scope="col">Updated</th>
     </tr>
   </thead>
   <tbody>
-    {#each summaries as { summary, type, date }}
+    {#each summaries as { text, type, created_at, updated_at }}
       <tr>
-        <td>{summary}</td>
+        <td>{text}</td>
         <td>{type}</td>
-        <td>{date}</td>
+        <td>{created_at}</td>
+        <td>{updated_at}</td>
       </tr>
     {/each}
   </tbody>

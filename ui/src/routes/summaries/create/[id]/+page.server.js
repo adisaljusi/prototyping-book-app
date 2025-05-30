@@ -13,10 +13,10 @@ export const actions = {
       title,
       bookId,
       text,
+      type,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
-    console.log(summary);
 
     try {
       const res = await createSummary(summary);
