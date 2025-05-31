@@ -35,4 +35,3 @@ export const DELETE = async ({ request }) => {
 
   return json(book);
 };
-
