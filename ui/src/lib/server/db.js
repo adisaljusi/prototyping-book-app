@@ -121,10 +121,10 @@ export async function getSummaryByBookId(bookId) {
 export async function updateBook(bookId, updatedFields) {
   try {
     const booksCollection = db.collection("books");
-    const query = { id: bookId };
-
     const { _id, ...fieldsToUpdate } = updatedFields;
-    const update = { $set: { ...fieldsToUpdate } };
+    const query = { id: bookId };
+    const update = { $set: fieldsToUpdate };
+
     const result = await booksCollection.updateOne(query, update);
 
     if (result.matchedCount === 0) {

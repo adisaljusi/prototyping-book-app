@@ -53,7 +53,7 @@ export const bookShelfActions = {
     }
   },
   async updateBook(book) {
-    const response = await fetch(`/api/bookshelf/id=${book.id}`, {
+    const response = await fetch(`/api/bookshelf/${book.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(book),
