@@ -1,6 +1,5 @@
 <script>
-  // Props: books is an array of book objects matching the schema
-  let { books, removeFromBookshelf } = $props();
+  let { books, removeFromBookshelf, setRead } = $props();
 </script>
 
 <table class="table table-striped table-bordered align-middle">
@@ -31,9 +30,15 @@
         <td>{book.year}</td>
         <td>
           {#if book.isRead}
-            <span class="badge bg-success">Yes</span>
+            <button
+              class="badge bg-success"
+              onclick={() => setRead(book, false)}>Yes</button
+            >
           {:else}
-            <span class="badge bg-secondary">No</span>
+            <button
+              class="badge bg-secondary"
+              onclick={() => setRead(book, true)}>No</button
+            >
           {/if}
         </td>
         <td>

@@ -18,6 +18,16 @@
         alt="Library"
         class="img-fluid rounded shadow"
       />
+      <iframe
+        style="height: 340px;"
+        class="w-100 mt-4"
+        src="https://www.youtube.com/embed/6ibCtsHgz3Y?si=pshRSuFJqFV6YcVN"
+        title="How books can open your mind | Lisa Bu"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
     </div>
   </div>
 </section>

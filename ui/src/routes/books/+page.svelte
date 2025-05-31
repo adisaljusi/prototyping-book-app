@@ -30,6 +30,8 @@
     <BookTable
       books={$bookshelf}
       removeFromBookshelf={(book) => bookShelfActions.removeFromBookshelf(book)}
+      setRead={(book, isRead) =>
+        bookShelfActions.updateBook({ ...book, isRead })}
     />
   {/if}
 

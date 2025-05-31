@@ -1,5 +1,10 @@
 <script>
-  let { book, addToBookshelf, removeFromBookshelf } = $props();
+  let {
+    book,
+    addToBookshelf,
+    removeFromBookshelf,
+    shouldShowSummary = true,
+  } = $props();
 </script>
 
 {#if book}
@@ -11,29 +16,39 @@
       </p>
     {/if}
     {#if book.cover_url}
-      <img
-        src={book.cover_url}
-        alt="Cover of {book.title}"
-        class="book-cover"
-      />
+      <div>
+        <img
+          src={book.cover_url}
+          alt="Cover of {book.title}"
+          class="book-cover"
+        />
+      </div>
     {/if}
-    {#if book.isInBookshelf}
-      <button
-        class="btn btn-sm btn-outline-danger mt-2"
-        onclick={() => removeFromBookshelf(book)}
-        data-id={book.id}
-      >
-        Remove from Bookshelf
-      </button>
-    {:else}
-      <button
-        class="btn btn-sm btn-outline-primary mt-2"
-        onclick={() => addToBookshelf(book)}
-        data-id={book.id}
-      >
-        Add to Bookshelf
-      </button>
-    {/if}
+    <div class="container d-flex flex-column">
+      {#if book.isInBookshelf}
+        <button
+          class="btn btn-sm btn-outline-danger mt-2 align-self-start"
+          onclick={() => removeFromBookshelf(book)}
+          data-id={book.id}
+        >
+          Remove from Bookshelf
+        </button>
+      {:else}
+        <button
+          class="btn btn-sm btn-outline-primary mt-2 align-self-start"
+          onclick={() => addToBookshelf(book)}
+          data-id={book.id}
+        >
+          Add to Bookshelf
+        </button>
+      {/if}
+
+      {#if shouldShowSummary}
+        <a class="btn btn-outline-primary mt-2 align-self-start" href="/summaries/{book.id}"
+          >View summaries</a
+        >
+      {/if}
+    </div>
     <p class="book-description">{book.description}</p>
     <ul class="book-meta">
       {#if book.links && book.links.length}

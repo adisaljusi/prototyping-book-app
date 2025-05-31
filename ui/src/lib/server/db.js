@@ -118,6 +118,26 @@ export async function getSummaryByBookId(bookId) {
   }
 }
 
+export async function updateBook(bookId, updatedFields) {
+  try {
+    const booksCollection = db.collection("books");
+    const query = { id: bookId };
+
+    const { _id, ...fieldsToUpdate } = updatedFields;
+    const update = { $set: { ...fieldsToUpdate } };
+    const result = await booksCollection.updateOne(query, update);
+
+    if (result.matchedCount === 0) {
+      throw new Error("Book not found");
+    }
+
+    return result.modifiedCount > 0;
+  } catch (error) {
+    console.error("Error updating book:", error);
+    return false;
+  }
+}
+
 export async function deleteSummary(summaryId) {
   try {
     if (!summaryId) {

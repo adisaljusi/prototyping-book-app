@@ -1,4 +1,4 @@
-import { createBook, deleteBook, getBooks } from "$lib/server/db";
+import { createBook, deleteBook, getBooks, updateBook } from "$lib/server/db";
 import { addBook } from "$lib/store/bookshelfStore";
 
 import { error, json } from "@sveltejs/kit";
@@ -35,3 +35,4 @@ export const DELETE = async ({ request }) => {
 
   return json(book);
 };
+

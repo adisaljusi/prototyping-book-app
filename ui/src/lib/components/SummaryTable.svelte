@@ -16,8 +16,8 @@
       <tr>
         <td>{text}</td>
         <td>{type}</td>
-        <td>{created_at}</td>
-        <td>{updated_at}</td>
+        <td>{new Date(created_at).toLocaleString()}</td>
+        <td>{new Date(updated_at).toLocaleString()}</td>
       </tr>
     {/each}
   </tbody>
